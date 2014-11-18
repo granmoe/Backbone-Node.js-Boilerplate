@@ -13,8 +13,3 @@ Usage
 =====
 
 You'll have to add details here later.
-
-
-Issues
-======
-

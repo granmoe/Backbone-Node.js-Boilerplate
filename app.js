@@ -5,6 +5,9 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var items = require('./routes/items.js');
+var db = 1;
+// db
 
 var app = express();
 
@@ -40,11 +43,10 @@ if (app.get('env') === 'development') {
     });
 }
 
-// ReST API
-app.get('/api/events', function (req, res) {
-  db.getMonthEvents({app_init: true}, function(data){ // NEED ERROR HANDLING HERE...
-      res.json(data);
-  });
+app.use('/items', items);
+app.use(function(req, res, next) {
+  req.db = db;
+  next();
 });
 
 // START SERVER

@@ -1,4 +1,3 @@
 mongodb/mongoose layer
-	install mongodb
 	create a sample db in the project
 	create a sample mongoose model in the project

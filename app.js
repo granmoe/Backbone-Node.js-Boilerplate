@@ -5,13 +5,14 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var items = require('./routes/items.js');
-var db = 1;
-// db
+var api = require('./routes/api');
+var mongoose = require('mongoose');
 
 var app = express();
 
 // SERVER CONFIGURATION
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -20,6 +21,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('env', 'development');
 app.set('port', process.env.PORT || 3000);
+
+
+// API Methods
+app.use('/api', api);
+// express will use all the route methods in this file for anything off of /api
 
 // development error handler
 // will print stacktrace
@@ -43,11 +49,9 @@ if (app.get('env') === 'development') {
     });
 }
 
-app.use('/items', items);
-app.use(function(req, res, next) {
-  req.db = db;
-  next();
-});
+// app.get('/api', function(req, res) {
+//   res.send('Library API is running');
+// });
 
 // START SERVER
 var server = app.listen(app.get('port'), function() {

@@ -1,6 +1,6 @@
-define(['backbone', 'dust', 'text!templates/app.dust', 'models/thing'], 
-  function(Backbone, dust, AppTemplate, Thing) {
-  var EventView = Backbone.View.extend({
+define(['backbone', 'dust', 'text!templates/app.dust', 'models/item'], 
+  function(Backbone, dust, AppTemplate, Item) {
+  var AppView = Backbone.View.extend({
       el: "#app",
       initialize: function() {
         var compiled = dust.compile(AppTemplate, "app_tmpl");
@@ -11,7 +11,7 @@ define(['backbone', 'dust', 'text!templates/app.dust', 'models/thing'],
         // 'click something' : 'doSomething'
       },
       render: function() {
-        var dustContext = this.model.toJSON();
+        var dustContext = this.model.toJSON() || '';
         var self = this;
         dust.render("app_tmpl", dustContext, function(err, out){
           if (err) {
@@ -22,5 +22,5 @@ define(['backbone', 'dust', 'text!templates/app.dust', 'models/thing'],
         });
       }      
   });
-  return EventView;
+  return AppView;
 });

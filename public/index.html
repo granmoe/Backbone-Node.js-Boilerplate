@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Easy Calendar</title>
+  <title>Boilerplate</title>
 
   <link rel="stylesheet" href="css/bootstrap-css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
@@ -10,7 +10,37 @@
 </head>
 <body>
 
-  <div id="app" class="container-fluid"></div>
+  <div>This is a simple application to demonstrate using a Backbone.js, dust.js, bootstrap frontend with a node.js, mongodb ReSTful backend.</div>
   
+  <br>
+  
+  <div id="items-table" class="panel panel-default">
+  	<div class="panel-heading">Items</div>
+    <table class="table">
+      <thead>
+        <tr>
+            <th data-field="name">Name</th>
+            <th data-field="description">Description</th>
+            <th data-field="id">ID</th>
+        </tr>
+      </thead>
+      <tbody id="items-rows">
+
+      </tbody>
+    </table>
+	</div>
+
+  <form class="form-inline" role="form" method="post" action="/api/items">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" name="name" id="name" placeholder="Enter item name">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" name="description" id="description" placeholder="Enter description">
+    </div>
+    <input type="submit" class="btn btn-default" value="Create Item">
+  </form>
+
 </body>
 </html>

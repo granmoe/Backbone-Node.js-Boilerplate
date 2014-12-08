@@ -3,7 +3,7 @@ define([
   'backbone'
   ], function(_, Backbone){
 
-	var Thing = Backbone.Model.extend({
+	var Item = Backbone.Model.extend({
 		initialize: function() {
 
 		},
@@ -11,5 +11,5 @@ define([
 			name: 'world'
 		}
   });
-  return Thing;
+  return Item;
 });

@@ -22,18 +22,7 @@ require.config({
 });
 
 require(
-  ['backbone', 'views/app', 'models/thing'], 
-	function(Backbone, AppView, Thing){
-
-    // Override Backbone.sync with ReSTful API to load initial data, remaining methods could be written on server side
-
-    // Backbone.origSync = Backbone.sync;
-    // Backbone.customSync = function(method, model, option) {
-    //     if (method == 'read') return Backbone.origSync(method, model, option);
-    //     console.log(method + ' method called for model: ' + JSON.stringify(model));
-    // }
-    // Backbone.sync = Backbone.customSync;
-    
-    var thing = new Thing();
-    var appview = new AppView({model: thing});
+  ['backbone', 'views/items', 'collections/items'], 
+	function(Backbone, ItemsView, items){
+    var itemsview = new ItemsView({collection: items});
 });

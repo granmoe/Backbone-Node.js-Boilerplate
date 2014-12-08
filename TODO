@@ -1,3 +1,7 @@
 mongodb/mongoose layer
-	create a sample db in the project
-	create a sample mongoose model in the project
+	ui
+		CRUD
+			Form for posting
+			Display existing items in db
+			Edit items
+			Delete item(s)

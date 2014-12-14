@@ -1,7 +1,5 @@
 mongodb/mongoose layer
 	ui
 		CRUD
-			Form for posting
-			Display existing items in db
 			Edit items
 			Delete item(s)

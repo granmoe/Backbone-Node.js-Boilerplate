@@ -12,12 +12,11 @@ define(['backbone', 'views/item'],
         this.listenTo(this.collection, 'reset', this.render);
       },
       events: {
-        // 'click something' : 'doSomething'
+        // 'action selector: method'
       },
       render: function() {
-        console.log(this.collection.length);
         this.collection.each(function(item) {
-          console.log(JSON.stringify(item.toJSON()));
+          console.log("id: " + item.id);
           this.renderItem(item);
         },this);
       }, 

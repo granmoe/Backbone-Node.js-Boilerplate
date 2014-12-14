@@ -4,11 +4,11 @@ define([
   ], function(_, Backbone){
 
 	var Item = Backbone.Model.extend({
+		idAttribute: "_id",
 		initialize: function() {
-
 		},
 		defaults: {
-			name: 'world'
+
 		}
   });
   return Item;

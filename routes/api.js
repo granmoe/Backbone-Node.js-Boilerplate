@@ -37,15 +37,24 @@ router.post('/items', function(req, res) {
 	});
 });
 
-// router.get('/items', function(req, res) {
-//   // var collection = db.collection('test');
-//   // var doc1 = {'hello':'doc1'};
-//   // var doc2 = {'hello':'doc2'};
-//   // var lotsOfDocs = [{'hello':'doc3'}, {'hello':'doc4'}];
-//   // collection.insert(doc1);
-//   // collection.insert(doc2, {w:1}, function(err, result) {});
-//   // collection.insert(lotsOfDocs, {w:1}, function(err, result) {});
-//   console.log("success");
-// });
+router.delete('/items/:id', function(req, res) {
+    return ItemModel.findById(req.params.id, function(err, item) {
+        return item.remove(function(err) {
+            if (!err) {
+              console.log('Item ' + req.params.id + ' removed');
+              return res.send('');
+            } else {
+              console.log(err);
+            }
+        });
+    });
+});
 
 module.exports = router;
+
+// url             HTTP Method  Operation
+// /api/items      GET          Get an array of all items
+// /api/items/:id  GET          Get the item with id of :id
+// /api/items      POST         Add a new item and return the item with an id attribute added
+// /api/items/:id  PUT          Update the item with id of :id
+// /api/items/:id  DELETE       Delete the item with id of :id

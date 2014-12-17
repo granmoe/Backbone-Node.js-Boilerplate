@@ -1,5 +1,5 @@
-define(['backbone', 'dust', 'text!templates/item.dust', 'models/item'], 
-  function(Backbone, dust, ItemTemplate, Item) {
+define(['backbone', 'dust', 'text!templates/item.dust', 'models/item', 'views/editCell'], 
+  function(Backbone, dust, ItemTemplate, Item, EditCellView) {
   var ItemView = Backbone.View.extend({
       tagName: "tr",
       className: "item-row",
@@ -7,19 +7,16 @@ define(['backbone', 'dust', 'text!templates/item.dust', 'models/item'],
       initialize: function() {
         var compiled = dust.compile(ItemTemplate, "item_tmpl");
         dust.loadSource(compiled);
+        this.on('dataChanged', this.update);
+        console.log(this.model.toJSON());
       },
       events: {
-        'click .delete':'deleteItem'
+        'click .editable-td': 'editData',
+        'click .delete':'deleteItem',
+        'change td': 'update'
       },
       deleteItem: function() {
-        console.log("deleteItem method");
-        console.log(this.model.url());
-        console.log(JSON.stringify(this.model.toJSON()));
-        console.log(this.model.id);
-        // Delete model and corresponding db entity
         this.model.destroy();
-
-        // Delete this view
         this.remove();
       },
       render: function() {
@@ -33,6 +30,24 @@ define(['backbone', 'dust', 'text!templates/item.dust', 'models/item'],
           }
         });
         return this;
+      },
+      editData: function(e) {
+        var cell = $(e.currentTarget);
+        var len = $(cell).val().length;
+        $(cell).selectionStart = len;
+        $(cell).selectionEnd = len;
+        $(cell).focus();
+        var editCellView = new EditCellView({ el: cell, model: this.model, parentView: this });
+      },
+      update: function() {
+        var desc = this.$(".desc-td").text(),
+            name = this.$(".name-td").text()
+        var newValues = {
+          "name": name,
+          "description": desc
+        }
+        this.model.set(newValues);
+        this.model.save();
       }
   });
   return ItemView;

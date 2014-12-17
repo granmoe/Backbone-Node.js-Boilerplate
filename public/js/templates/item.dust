@@ -1,5 +1,5 @@
-<td>{name}</td>
-<td>{description}</td>
+<td class="editable-td name-td">{name}</td>
+<td class="editable-td desc-td">{description}</td>
 <td>{_id}</td>
 <td>
 	<button type="button" class="btn btn-default delete">Delete</button>

@@ -1,5 +1,1 @@
-mongodb/mongoose layer
-	ui
-		CRUD
-			Edit items
-			Delete item(s)
+Edit table items inline

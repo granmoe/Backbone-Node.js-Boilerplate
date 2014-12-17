@@ -22,12 +22,13 @@ router.get('/items', function(req, res) {
 		}
 	});
 });
+
 router.post('/items', function(req, res) {
 	var item = new ItemModel({
 		name: req.body.name,
 		description: req.body.description
 	});
-	item.save(function(err){
+	return item.save(function(err){
 		if (err) {
 			console.log(err);
 		} else {
@@ -48,6 +49,24 @@ router.delete('/items/:id', function(req, res) {
             }
         });
     });
+});
+
+router.put( '/items/:id', function( req, res ) {
+	console.log( 'Updating item ' + req.body.name );
+	return ItemModel.findById( req.params.id, function( err, item ) {
+
+		item.name = req.body.name;
+		item.description = req.body.description;
+
+		return item.save( function( err ) {
+			if( !err ) {
+				console.log( 'item updated' );
+			} else {
+				console.log( err );
+			}
+			return res.send('');
+		});
+	});
 });
 
 module.exports = router;

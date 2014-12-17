@@ -11,3 +11,7 @@ body {
 a {
   color: #4F6000;
 }
+.cellEditing input {
+	border: 2px solid blue;
+	width: 100%;
+}

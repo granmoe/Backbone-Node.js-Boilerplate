@@ -1,5 +1,5 @@
-define(['backbone', 'dust', 'text!templates/item.dust', 'models/item', 'views/editCell'], 
-  function(Backbone, dust, ItemTemplate, Item, EditCellView) {
+define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!templates/editCell.dust', 'models/item', 'events_bus'], 
+  function(Backbone, dust, _, ItemTemplate, EditCellTemplate, Item, events_bus) {
   var ItemView = Backbone.View.extend({
       tagName: "tr",
       className: "item-row",
@@ -7,17 +7,27 @@ define(['backbone', 'dust', 'text!templates/item.dust', 'models/item', 'views/ed
       initialize: function() {
         var compiled = dust.compile(ItemTemplate, "item_tmpl");
         dust.loadSource(compiled);
-        this.on('dataChanged', this.update);
-        console.log(this.model.toJSON());
+        compiled = dust.compile(EditCellTemplate, "editCell_tmpl");
+        dust.loadSource(compiled);
+        this.editing = false;
+        this.listenTo(events_bus, 'editing', this.turnOffEvents);
+        this.listenTo(events_bus, 'doneEditing', this.delegateEvents);
       },
       events: {
         'click .editable-td': 'editData',
         'click .delete':'deleteItem',
-        'change td': 'update'
+        'change td': 'update',
+        'keypress input': 'handleKeypress'
       },
       deleteItem: function() {
+        if (this.editing) return;
         this.model.destroy();
         this.remove();
+      },
+      turnOffEvents: function() {
+        if (!this.editing) {
+          this.undelegateEvents();
+        }
       },
       render: function() {
         var dustContext = this.model.toJSON();
@@ -32,14 +42,47 @@ define(['backbone', 'dust', 'text!templates/item.dust', 'models/item', 'views/ed
         return this;
       },
       editData: function(e) {
-        var cell = $(e.currentTarget);
-        var len = $(cell).val().length;
-        $(cell).selectionStart = len;
-        $(cell).selectionEnd = len;
-        $(cell).focus();
-        var editCellView = new EditCellView({ el: cell, model: this.model, parentView: this });
+        if (this.editing) return;
+        this.editing = true;
+        events_bus.trigger('editing');
+        this.cell = $(e.currentTarget);
+        this.origValue = this.cell.text();
+        var ctx = { origValue: this.origValue };
+        var self = this;
+        dust.render("editCell_tmpl", ctx, function(err, out){
+          if (err) {
+            console.log(err);
+          } else {
+            $(self.cell).html(out)
+          }
+        });
+        var input = $(this.cell).find("input");
+        $(input).focus();
+        var len = input.val().length;
+        $(input)[0].setSelectionRange(len, len);
+      },
+      handleKeypress: function(e) {
+        switch (e.which) {
+          case 13: // enter
+            var cellInput = $(e.currentTarget);
+            this.newValue = cellInput.val();
+            this.update();
+            break;
+          case 27: // escape
+            this.resetCell;
+            break;
+        }
+        this.editing = false;
+        events_bus.trigger('doneEditing');
+      },
+      resetCell: function() {
+        $(this.cell).empty();
+        $(this.cell).text(this.origValue);
+
       },
       update: function() {
+        $(this.cell).empty();
+        $(this.cell).text(this.newValue);
         var desc = this.$(".desc-td").text(),
             name = this.$(".name-td").text()
         var newValues = {

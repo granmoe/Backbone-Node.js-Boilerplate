@@ -3,14 +3,11 @@ define(['backbone', 'views/item'],
   var ItemsView = Backbone.View.extend({
       el: "#items-rows",
       initialize: function() {
-        this.collection.fetch({reset: true, success: function(coll, resp, opts){
-          //
-          }});
+        this.collection.fetch({reset: true, success: function(coll, resp, opts) {} });
         this.render();
         this.listenTo(this.collection, 'add', this.renderItem);
         this.listenTo(this.collection, 'reset', this.render);
-      },
-      events: {
+        window["items" + this.cid] = this;
       },
       render: function() {
         this.collection.each(function(item) {

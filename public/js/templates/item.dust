@@ -2,5 +2,5 @@
 <td class="editable-td desc-td">{description}</td>
 <td>{_id}</td>
 <td>
-	<button type="button" class="btn btn-default delete">Delete</button>
+	<button type="button" class="btn btn-danger delete">Delete</button>
 </td>

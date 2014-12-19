@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Boilerplate</title>
+  <title>Boilerplate Modern Full-Stack</title>
 
   <link rel="stylesheet" href="css/bootstrap-css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
@@ -9,8 +9,8 @@
   <script data-main="js/main.js" src="js/libs/require.js"></script>
 </head>
 <body>
-
-  <div>This is a simple application to demonstrate using a Backbone.js, dust.js, bootstrap frontend with a node.js, mongodb ReSTful backend.</div>
+  <h1>Boilerplate Node.js/Mongodb/Backbone App</h1>
+  <h4>This is a simple application to demonstrate using a Backbone.js, dust.js, bootstrap frontend with a node.js, mongodb ReSTful backend.</h4>
   
   <br>
   
@@ -30,16 +30,8 @@
     </table>
   </div>    
 
-  <form class="form-inline" role="form" method="post" action="/api/items">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" name="name" id="name" placeholder="Enter item name">
-    </div>
-    <div class="form-group">
-      <label for="description">Description</label>
-      <input type="text" class="form-control" name="description" id="description" placeholder="Enter description">
-    </div>
-    <input type="submit" class="btn btn-default" value="Create Item">
+  <form id="create-form" class="form-inline">
+
   </form>
 
 </body>

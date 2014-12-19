@@ -1,0 +1,19 @@
+<h1>Boilerplate Node.js/Mongodb/Backbone App</h1>
+<h4>This is a simple application to demonstrate using a Backbone.js, dust.js, bootstrap frontend with a node.js, mongodb ReSTful backend.</h4> 
+<br>  
+<div class="table-responsive" id="items-table">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+          <th data-field="name">Name</th>
+          <th data-field="description">Description</th>
+          <th data-field="id">ID</th>
+          <th></th>
+      </tr>
+    </thead>
+    <tbody id="items-rows">
+
+    </tbody>
+  </table>
+</div>    
+<form id="create-form" class="form-inline"></form>

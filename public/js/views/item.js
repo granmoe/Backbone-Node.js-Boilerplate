@@ -12,11 +12,11 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         this.editing = false;
         this.listenTo(events_bus, 'editing', this.turnOffEvents);
         this.listenTo(events_bus, 'doneEditing', this.delegateEvents);
+        this.listenTo(events_bus, 'cancelEdit', this.cancelEdit);
       },
       events: {
         'click .editable-td': 'editData',
         'click .delete':'deleteItem',
-        'change td': 'update',
         'keypress input': 'handleKeypress'
       },
       deleteItem: function() {
@@ -91,6 +91,11 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         }
         this.model.set(newValues);
         this.model.save();
+      },
+      cancelEdit: function() {
+        this.editing = false;
+        this.delegateEvents();
+        this.resetCell();
       }
   });
   return ItemView;

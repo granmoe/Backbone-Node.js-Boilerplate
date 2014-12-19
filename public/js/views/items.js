@@ -1,5 +1,5 @@
-define(['backbone', 'views/item'], 
-  function(Backbone, ItemView) {
+define(['backbone', 'views/item', 'collections/items'], 
+  function(Backbone, ItemView, Items) {
   var ItemsView = Backbone.View.extend({
       el: "#items-rows",
       initialize: function() {
@@ -7,7 +7,6 @@ define(['backbone', 'views/item'],
         this.render();
         this.listenTo(this.collection, 'add', this.renderItem);
         this.listenTo(this.collection, 'reset', this.render);
-        window["items" + this.cid] = this;
       },
       render: function() {
         this.collection.each(function(item) {

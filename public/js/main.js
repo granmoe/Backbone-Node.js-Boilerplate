@@ -22,8 +22,7 @@ require.config({
 });
 
 require(
-  ['backbone', 'views/items', 'views/create', 'collections/items', 'events_bus'], 
-	function(Backbone, ItemsView, CreateView, items, events_bus){
-    var itemsview = new ItemsView({collection: items});
-    var createView = new CreateView({collection: items});
+  ['backbone', 'views/app'], 
+	function(Backbone, AppView) {
+    var appView = new AppView();
 });

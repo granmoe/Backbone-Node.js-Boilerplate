@@ -28,7 +28,6 @@ define(['backbone', 'dust', 'text!templates/app.dust', 'collections/items', 'vie
           this.resetCell();
           this.stopEditing();
         }
-        // if editable-td, switch to editing that td
       },
       resetCell: function() {
         $(app.cell).empty();

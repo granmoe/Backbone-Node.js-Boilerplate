@@ -11,10 +11,16 @@ body {
 a {
   color: #4F6000;
 }
+.item-td {
+	vertical-align: middle !important;
+}
 .cellEditing .input-group {
 	width: 100%;
 }
 .cellEditing .row {
 	margin: 0;
 	padding: 0;
+}
+div .row {
+	margin: 0;
 }

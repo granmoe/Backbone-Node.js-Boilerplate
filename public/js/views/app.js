@@ -17,7 +17,7 @@ define(['backbone', 'dust', 'text!templates/app.dust', 'collections/items', 'vie
         var target = $(e.target);
         // is a TD that isn't being edited
         if (!($(target).has("input").length) && !($(target).prop('tagName') === 'INPUT')) {
-          events_bus.trigger('cancelEdit');
+          events_bus.trigger('cancelEdit', target);
           this.stopEditing();
         }
         // if editable-td, switch to editing that td

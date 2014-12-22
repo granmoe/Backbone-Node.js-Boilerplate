@@ -1,2 +1,3 @@
 Table inline edit style needs to be cleaner, shouldn't change width/height of td
+
 Clicking another td while in edit should switch to editing that td

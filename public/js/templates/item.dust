@@ -1,6 +1,6 @@
-<td class="editable-td name-td">{name}</td>
-<td class="editable-td desc-td">{description}</td>
-<td>{_id}</td>
-<td>
+<td class="item-td editable-td name-td col-md-3">{name}</td>
+<td class="item-td editable-td desc-td col-md-3">{description}</td>
+<td class="item-td col-md-3">{_id}</td>
+<td class="item-td  col-md-3">
 	<button type="button" class="btn btn-danger delete">Delete</button>
 </td>

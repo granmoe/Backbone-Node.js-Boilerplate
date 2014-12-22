@@ -92,7 +92,9 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         this.model.set(newValues);
         this.model.save();
       },
-      cancelEdit: function() {
+      cancelEdit: function(target) {
+        console.log("cancelEdit from itemview");
+        if (this.el === $(target)) return;
         this.editing = false;
         this.delegateEvents();
         this.resetCell();
@@ -100,3 +102,17 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
   });
   return ItemView;
 });
+
+// $(document).click(function(e){
+    //   var target = $(e.target);
+    //   if ($(target).parents("#items-table").length === 1) { // within table
+    //     if (!($(target).has("input").length)) {             // isn't a cell in edit mode
+    //       console.log("cancelEdit triggered");
+    //       events_bus.trigger('cancelEdit');
+    //     }
+    //   } else {
+    //     events_bus.trigger('cancelEdit');
+    //   } 
+    //     // if it is another td that doesn't already have an input, trigger an event
+    //     // that will switch that td to edit mode and revert changes on the td that was in edit mode
+    // });   

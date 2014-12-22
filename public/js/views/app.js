@@ -1,5 +1,5 @@
-define(['backbone', 'dust', 'text!templates/app.dust', 'collections/items', 'views/items', 'views/create', 'events_bus'],
-  function(Backbone, dust, AppTemplate, Items, ItemsView, CreateView, events_bus) {
+define(['backbone', 'dust', 'text!templates/app.dust', 'collections/items', 'views/items', 'views/create', 'events_bus', 'app'],
+  function(Backbone, dust, AppTemplate, Items, ItemsView, CreateView, events_bus, app) {
   var AppView = Backbone.View.extend({
       el: "#app",
       editMode: false,
@@ -11,23 +11,36 @@ define(['backbone', 'dust', 'text!templates/app.dust', 'collections/items', 'vie
         this.render();
       },
       events: {
+        'click' : 'handleClick',
         'click #items-table' : 'handleTableClick'
+      },
+      handleClick: function(e) {
+        var target = $(e.target);
+        if (!(target).parents("#items-table").length) {
+          this.resetCell();
+          this.stopEditing();
+        }
       },
       handleTableClick: function(e) {
         var target = $(e.target);
         // is a TD that isn't being edited
         if (!($(target).has("input").length) && !($(target).prop('tagName') === 'INPUT')) {
-          events_bus.trigger('cancelEdit', target);
+          this.resetCell();
           this.stopEditing();
         }
         // if editable-td, switch to editing that td
       },
+      resetCell: function() {
+        $(app.cell).empty();
+        $(app.cell).text(app.origValue);
+      },
       startEditing: function() {
-        this.editMode = true;
+        if (app.editMode) return; // already in edit mode, don't need to do anything
+        app.editMode = true;
         this.$(":button").attr("disabled", "disabled");
       },
       stopEditing: function() {
-        this.editMode = false;
+        app.editMode = false;
         this.$(":button").removeAttr("disabled");
       },
       render: function() {

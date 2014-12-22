@@ -1,5 +1,5 @@
-define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!templates/editCell.dust', 'models/item', 'events_bus'], 
-  function(Backbone, dust, _, ItemTemplate, EditCellTemplate, Item, events_bus) {
+define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!templates/editCell.dust', 'models/item', 'events_bus', 'app'], 
+  function(Backbone, dust, _, ItemTemplate, EditCellTemplate, Item, events_bus, app) {
   var ItemView = Backbone.View.extend({
       tagName: "tr",
       className: "item-row",
@@ -9,10 +9,6 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         dust.loadSource(compiled);
         compiled = dust.compile(EditCellTemplate, "editCell_tmpl");
         dust.loadSource(compiled);
-        this.editing = false;
-        this.listenTo(events_bus, 'editing', this.turnOffEvents);
-        this.listenTo(events_bus, 'doneEditing', this.delegateEvents);
-        this.listenTo(events_bus, 'cancelEdit', this.cancelEdit);
       },
       events: {
         'click .editable-td': 'editData',
@@ -20,14 +16,9 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         'keypress input': 'handleKeypress'
       },
       deleteItem: function() {
-        if (this.editing) return;
+        if (app.editMode) return;
         this.model.destroy();
         this.remove();
-      },
-      turnOffEvents: function() {
-        if (!this.editing) {
-          this.undelegateEvents();
-        }
       },
       render: function() {
         var dustContext = this.model.toJSON();
@@ -42,21 +33,21 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         return this;
       },
       editData: function(e) {
-        if (this.editing) return;
-        this.editing = true;
+        var target = $(e.target);
+        if (($(target).has("input").length) || ($(target).prop('tagName') === 'INPUT')) return;
+        if (app.editMode) this.resetCell();
         events_bus.trigger('editing');
-        this.cell = $(e.currentTarget);
-        this.origValue = this.cell.text();
-        var ctx = { origValue: this.origValue };
-        var self = this;
+        app.cell = $(e.currentTarget);
+        app.origValue = app.cell.text();
+        var ctx = { origValue: app.origValue };
         dust.render("editCell_tmpl", ctx, function(err, out){
           if (err) {
             console.log(err);
           } else {
-            $(self.cell).html(out)
+            $(app.cell).html(out)
           }
         });
-        var input = $(this.cell).find("input");
+        var input = $(app.cell).find("input");
         $(input).focus();
         var len = input.val().length;
         $(input)[0].setSelectionRange(len, len);
@@ -65,24 +56,18 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         switch (e.which) {
           case 13: // enter
             var cellInput = $(e.currentTarget);
-            this.newValue = cellInput.val();
+            app.newValue = cellInput.val();
             this.update();
             break;
           case 27: // escape
             this.resetCell;
             break;
         }
-        this.editing = false;
         events_bus.trigger('doneEditing');
       },
-      resetCell: function() {
-        $(this.cell).empty();
-        $(this.cell).text(this.origValue);
-
-      },
       update: function() {
-        $(this.cell).empty();
-        $(this.cell).text(this.newValue);
+        $(app.cell).empty();
+        $(app.cell).text(app.newValue);
         var desc = this.$(".desc-td").text(),
             name = this.$(".name-td").text()
         var newValues = {
@@ -92,27 +77,10 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         this.model.set(newValues);
         this.model.save();
       },
-      cancelEdit: function(target) {
-        console.log("cancelEdit from itemview");
-        if (this.el === $(target)) return;
-        this.editing = false;
-        this.delegateEvents();
-        this.resetCell();
+      resetCell: function() {
+        $(app.cell).empty();
+        $(app.cell).text(app.origValue);
       }
   });
   return ItemView;
 });
-
-// $(document).click(function(e){
-    //   var target = $(e.target);
-    //   if ($(target).parents("#items-table").length === 1) { // within table
-    //     if (!($(target).has("input").length)) {             // isn't a cell in edit mode
-    //       console.log("cancelEdit triggered");
-    //       events_bus.trigger('cancelEdit');
-    //     }
-    //   } else {
-    //     events_bus.trigger('cancelEdit');
-    //   } 
-    //     // if it is another td that doesn't already have an input, trigger an event
-    //     // that will switch that td to edit mode and revert changes on the td that was in edit mode
-    // });   

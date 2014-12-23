@@ -35,7 +35,10 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
       editData: function(e) {
         var target = $(e.target);
         if (($(target).has("input").length) || ($(target).prop('tagName') === 'INPUT')) return;
-        if (app.editMode) this.resetCell();
+        if (!(typeof app.editView === 'undefined')) {
+          app.editView.update();
+        }
+        app.editView = this;
         events_bus.trigger('editing');
         app.cell = $(e.currentTarget);
         app.origValue = app.cell.text();
@@ -53,21 +56,17 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         $(input)[0].setSelectionRange(len, len);
       },
       handleKeypress: function(e) {
-        switch (e.which) {
-          case 13: // enter
-            var cellInput = $(e.currentTarget);
-            app.newValue = cellInput.val();
-            this.update();
-            break;
-          case 27: // escape
-            this.resetCell;
-            break;
+        var cellInput = $(e.currentTarget);
+        app.newValue = cellInput.val();
+        if (e.which===13) {
+          this.update();
+          events_bus.trigger('doneEditing');
         }
-        events_bus.trigger('doneEditing');
       },
       update: function() {
-        $(app.cell).empty();
-        $(app.cell).text(app.newValue);
+        app.newValue = app.cell.find("input").val();
+        app.cell.empty();
+        app.cell.text(app.newValue);
         var desc = this.$(".desc-td").text(),
             name = this.$(".name-td").text()
         var newValues = {
@@ -78,8 +77,8 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         this.model.save();
       },
       resetCell: function() {
-        $(app.cell).empty();
-        $(app.cell).text(app.origValue);
+        app.cell.empty();
+        app.cell.text(app.origValue);
       }
   });
   return ItemView;

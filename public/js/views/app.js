@@ -40,6 +40,7 @@ define(['backbone', 'dust', 'text!templates/app.dust', 'collections/items', 'vie
       },
       stopEditing: function() {
         app.editMode = false;
+        delete app.editView;
         this.$(":button").removeAttr("disabled");
       },
       render: function() {

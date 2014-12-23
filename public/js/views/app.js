@@ -11,21 +11,15 @@ define(['backbone', 'dust', 'text!templates/app.dust', 'collections/items', 'vie
         this.render();
       },
       events: {
-        'click' : 'handleClick',
-        'click #items-table' : 'handleTableClick'
+        'click' : 'handleClick'
       },
       handleClick: function(e) {
         var target = $(e.target);
+        if (target.is("button")) return; // we handle these elsewhere
+        // only handle clicks outside of items-table, items-table clicks handled in item view
         if (!(target).parents("#items-table").length) {
-          this.resetCell();
-          this.stopEditing();
-        }
-      },
-      handleTableClick: function(e) {
-        var target = $(e.target);
-        // is a TD that isn't being edited
-        if (!($(target).has("input").length) && !($(target).prop('tagName') === 'INPUT')) {
-          this.resetCell();
+          console.log("handleClick, app.js")
+          app.editView.update();
           this.stopEditing();
         }
       },

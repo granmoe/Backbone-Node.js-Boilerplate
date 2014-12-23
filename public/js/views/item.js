@@ -34,6 +34,13 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
       },
       editData: function(e) {
         var target = $(e.target);
+        if (target.is("button")) {
+          app.cell.empty();
+          app.cell.text(app.origValue);
+          delete app.editView;
+          events_bus.trigger('doneEditing');
+          return;
+        }
         if (($(target).has("input").length) || ($(target).prop('tagName') === 'INPUT')) return;
         if (!(typeof app.editView === 'undefined')) {
           app.editView.update();
@@ -75,10 +82,6 @@ define(['backbone', 'dust', 'underscore', 'text!templates/item.dust', 'text!temp
         }
         this.model.set(newValues);
         this.model.save();
-      },
-      resetCell: function() {
-        app.cell.empty();
-        app.cell.text(app.origValue);
       }
   });
   return ItemView;

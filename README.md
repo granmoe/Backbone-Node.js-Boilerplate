@@ -1,6 +1,6 @@
 This is a boilerplate project using the following tech stack: node.js, express, mongodb, mongoose, backbone.js, require.js, dust.js, and bootstrap. It has barebones ReSTful API logic already written. It also includes a backbone implementation of an inline-editable table.
 
-![There should be a picture here. Maybe it's no longer present in the repo?](RepoPic1.jpg?raw=true)
+![There should be a picture here. Maybe it's no longer present in the repo?](RepoPic1.png?raw=true)
 
 
 Installation

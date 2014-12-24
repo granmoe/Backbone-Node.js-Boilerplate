@@ -6,9 +6,11 @@ This is a boilerplate project using the following tech stack: node.js, express, 
 Installation
 ============
 
-1. Go to nodejs.org to install the appropriate distribution of node.js for your system.
-2. In a command shell, navigate to the project root directory and enter the command, "node app.js" to start the server.
-3. Open http://localhost:3000/ in a browser.
+1. Go to http://www.nodejs.org to install the appropriate distribution of node.js for your system.
+2. Go to http://www.mongodb.org to install MongoDB on your system.
+3. Start the mongodb service on your system (visit link in step two for more details).
+4. In a command shell, navigate to the project root directory and enter the command, "node app.js" to start the server.
+5. Open http://localhost:3000/ in a browser.
 
 
 Usage
